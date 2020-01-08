@@ -1,12 +1,12 @@
 package mate.academy.internetshop.service;
 
+import java.util.List;
+
 import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.User;
-import java.util.List;
-import java.util.Optional;
 
 public interface OrderService {
-    Optional<Order> get(Long id);
+    Order get(Long id);
 
     Order update(Order order);
 

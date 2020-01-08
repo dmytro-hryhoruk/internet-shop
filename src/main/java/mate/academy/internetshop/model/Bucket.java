@@ -4,15 +4,15 @@ import java.util.List;
 
 public class Bucket {
     private Long userId;
-    private Long Id;
+    private Long id;
     private List<Item> items;
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        id = this.id;
     }
 
     public List<Item> getItems() {

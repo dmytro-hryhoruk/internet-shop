@@ -1,5 +1,7 @@
 package mate.academy.internetshop;
 
+import java.util.List;
+
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.library.Injector;
 import mate.academy.internetshop.model.Bucket;
@@ -10,8 +12,6 @@ import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.ItemService;
 import mate.academy.internetshop.service.OrderService;
 import mate.academy.internetshop.service.UserService;
-
-import java.util.List;
 
 public class Main {
     @Inject
