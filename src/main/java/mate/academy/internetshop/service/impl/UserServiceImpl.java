@@ -5,13 +5,12 @@ import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.library.Service;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
-
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Inject
-    private UserDao userDao;
+    private static UserDao userDao;
 
     @Override
     public User create(User user) {
@@ -19,9 +18,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User get(Long userId) {
-        return userDao.get(userId)
-                .orElseThrow(() -> new NoSuchElementException("Couldn't find element with given id"));
+    public Optional<User> get(Long userId) {
+        return userDao.get(userId);
     }
 
     @Override
@@ -31,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean delete(Long userId) {
-        return userDao.delete(userId);
+        return userDao.deleteById(userId);
     }
 
     @Override

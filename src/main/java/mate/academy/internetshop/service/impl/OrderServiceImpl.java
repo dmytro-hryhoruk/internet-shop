@@ -1,25 +1,25 @@
 package mate.academy.internetshop.service.impl;
 
 import mate.academy.internetshop.dao.OrderDao;
+import mate.academy.internetshop.dao.Storage;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.library.Service;
 import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.OrderService;
-
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
     @Inject
-    private OrderDao orderDao;
-
+    private static OrderDao orderDao;
 
     @Override
-    public Order get(Long id) {
-        return orderDao.get(id)
-                .orElseThrow(() -> new NoSuchElementException("Couldn't find element with given id"));
+    public Optional<Order> get(Long id) {
+        return orderDao.get(id);
     }
 
     @Override
@@ -28,25 +28,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void delete(Long id) {
-        orderDao.delete(id);
+    public boolean delete(Long id) {
+        return orderDao.deleteById(id);
     }
 
     @Override
-    public void delete(Order order) {
-
+    public boolean delete(Order order) {
+        return orderDao.delete(order);
     }
 
     @Override
     public List getUserOrders(User user) {
-        return user.getUserOrders();
+        if (!Storage.users.contains(user)) {
+            throw new NoSuchElementException("User you're trying to find, doesn't exist");
+        }
+        return Storage.orders
+                .stream()
+                .filter(o -> o.getUserId().equals(user.getId()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Order completeOrder(List items, User user) {
         Order newOrder = new Order();
-        newOrder.setItemsList(items);
-        newOrder.setUser(user);
+        newOrder.setItems(items);
+        newOrder.setUserId(user.getId());
         orderDao.create(newOrder);
         return newOrder;
     }

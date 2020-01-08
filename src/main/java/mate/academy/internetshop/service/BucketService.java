@@ -2,13 +2,13 @@ package mate.academy.internetshop.service;
 
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
-
 import java.util.List;
+import java.util.Optional;
 
 public interface BucketService {
     Bucket create(Bucket bucket);
 
-    Bucket get(Long bucketId);
+    Optional<Bucket> get(Long bucketId);
 
     Bucket update(Bucket bucket);
 

@@ -4,8 +4,6 @@ import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.Storage;
 import mate.academy.internetshop.library.Dao;
 import mate.academy.internetshop.model.Order;
-
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Dao
@@ -29,33 +27,31 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Order update(Order order) {
-        Order oldOrder = Storage.orders
-                .stream()
-                .filter(o -> o.getId().equals(order.getId()))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Couldn't find element"));
-        Storage.orders.remove(oldOrder);
-        Storage.orders.add(order);
+        for (int i = 0; i < Storage.orders.size(); i++) {
+            if (Storage.orders.get(i).getId().equals(order.getId())) {
+                Storage.orders.get(i).setId(order.getId());
+                Storage.orders.get(i).setUserId(order.getUserId());
+                Storage.orders.get(i).setItems(order.getItems());
+            }
+        }
         return order;
     }
 
     @Override
-    public boolean delete(Long id) {
-        Order toBeDeletedOrder = Storage.orders
+    public boolean deleteById(Long id) {
+        Optional<Order> toBeDeletedOrder = Storage.orders
                 .stream()
                 .filter(o -> o.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Couldn't find element"));
-        return Storage.orders.remove(toBeDeletedOrder);
+                .findFirst();
+        return Storage.orders.remove(toBeDeletedOrder.get());
     }
 
     @Override
     public boolean delete(Order order) {
-        Order toBeDeletedOrder = Storage.orders
+        Optional<Order> toBeDeletedOrder = Storage.orders
                 .stream()
                 .filter(o -> o.getId().equals(order.getId()))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Couldn't find element"));
-        return Storage.orders.remove(toBeDeletedOrder);
+                .findFirst();
+        return Storage.orders.remove(toBeDeletedOrder.get());
     }
 }

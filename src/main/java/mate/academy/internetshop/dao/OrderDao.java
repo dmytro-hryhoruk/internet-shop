@@ -1,7 +1,6 @@
 package mate.academy.internetshop.dao;
 
 import mate.academy.internetshop.model.Order;
-
 import java.util.Optional;
 
 public interface OrderDao {
@@ -11,7 +10,7 @@ public interface OrderDao {
 
     Order update(Order order);
 
-    boolean delete(Long orderId);
+    boolean deleteById(Long orderId);
 
     boolean delete(Order order);
 }

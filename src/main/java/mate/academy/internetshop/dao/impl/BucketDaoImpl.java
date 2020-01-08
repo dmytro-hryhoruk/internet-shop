@@ -4,8 +4,6 @@ import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.Storage;
 import mate.academy.internetshop.library.Dao;
 import mate.academy.internetshop.model.Bucket;
-
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Dao
@@ -30,34 +28,31 @@ public class BucketDaoImpl implements BucketDao {
 
     @Override
     public Bucket update(Bucket bucket) {
-        Bucket oldBucket = Storage.buckets
-                .stream()
-                .filter(b -> b.getId().equals(bucket.getId()))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Couldn't find element"));
-        Storage.buckets.remove(oldBucket);
-        Storage.buckets.add(bucket);
+        for (int i = 0; i < Storage.buckets.size(); i++) {
+            if (Storage.buckets.get(i).getId().equals(bucket.getId())) {
+                Storage.buckets.get(i).setId(bucket.getId());
+                Storage.buckets.get(i).setUserId(bucket.getUserId());
+                Storage.buckets.get(i).setItems(bucket.getItems());
+            }
+        }
         return bucket;
     }
 
-
     @Override
-    public boolean delete(Long id) {
-        Bucket toBeDeletedBucket = Storage.buckets
+    public boolean deleteById(Long id) {
+        Optional<Bucket> toBeDeletedBucket = Storage.buckets
                 .stream()
                 .filter(b -> b.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Couldn't find element"));
-        return Storage.buckets.remove(toBeDeletedBucket);
+                .findFirst();
+        return Storage.buckets.remove(toBeDeletedBucket.get());
     }
 
     @Override
     public boolean delete(Bucket bucket) {
-        Bucket toBeDeletedBucket = Storage.buckets
+        Optional<Bucket> toBeDeletedBucket = Storage.buckets
                 .stream()
                 .filter(b -> b.getId().equals(bucket.getId()))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Couldn't find element"));
-        return Storage.buckets.remove(toBeDeletedBucket);
+                .findFirst();
+        return Storage.buckets.remove(toBeDeletedBucket.get());
     }
 }

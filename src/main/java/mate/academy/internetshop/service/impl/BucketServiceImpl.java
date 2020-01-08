@@ -6,14 +6,13 @@ import mate.academy.internetshop.library.Service;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.BucketService;
-
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class BucketServiceImpl implements BucketService {
     @Inject
-    private BucketDao bucketDao;
+    private static BucketDao bucketDao;
 
     @Override
     public Bucket create(Bucket bucket) {
@@ -21,9 +20,8 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public Bucket get(Long bucketId) {
-        return bucketDao.get(bucketId)
-                .orElseThrow(() -> new NoSuchElementException("Couldn't find element with given id"));
+    public Optional<Bucket> get(Long bucketId) {
+        return bucketDao.get(bucketId);
     }
 
     @Override
@@ -33,7 +31,7 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     public boolean delete(Long bucketId) {
-        return bucketDao.delete(bucketId);
+        return bucketDao.deleteById(bucketId);
     }
 
     @Override

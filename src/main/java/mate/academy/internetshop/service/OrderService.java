@@ -2,17 +2,17 @@ package mate.academy.internetshop.service;
 
 import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.User;
-
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderService {
-    Order get(Long id);
+    Optional<Order> get(Long id);
 
     Order update(Order order);
 
-    void delete(Long id);
+    boolean delete(Long id);
 
-    void delete(Order order);
+    boolean delete(Order order);
 
     List getUserOrders(User user);
 

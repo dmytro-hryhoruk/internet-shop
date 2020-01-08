@@ -6,14 +6,13 @@ import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.library.Service;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.ItemService;
-
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class ItemServiceImpl implements ItemService {
     @Inject
-    private ItemDao itemDao;
+    private static ItemDao itemDao;
 
     @Override
     public Item create(Item item) {
@@ -21,9 +20,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item get(Long id) {
-        return itemDao.get(id)
-                .orElseThrow(() -> new NoSuchElementException("Couldn't find element with given id"));
+    public Optional<Item> get(Long id) {
+        return itemDao.get(id);
     }
 
     @Override
@@ -32,13 +30,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void delete(Long id) {
-        itemDao.delete(id);
+    public boolean delete(Long id) {
+        return itemDao.deleteById(id);
     }
 
     @Override
-    public void delete(Item item) {
-        itemDao.delete(item);
+    public boolean delete(Item item) {
+        return itemDao.delete(item);
     }
 
     @Override

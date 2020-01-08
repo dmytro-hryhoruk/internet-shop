@@ -3,9 +3,9 @@ package mate.academy.internetshop.model;
 import java.util.List;
 
 public class Order {
-    private User user;
+    private Long userId;
     private Long id;
-    private List<Item> itemsList;
+    private List<Item> items;
 
     public Long getId() {
         return id;
@@ -15,19 +15,19 @@ public class Order {
         this.id = id;
     }
 
-    public List<Item> getItemsList() {
-        return itemsList;
+    public List<Item> getItems() {
+        return items;
     }
 
-    public void setItemsList(List<Item> itemsList) {
-        this.itemsList = itemsList;
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

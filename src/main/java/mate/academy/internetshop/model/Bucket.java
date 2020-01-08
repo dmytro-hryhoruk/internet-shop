@@ -3,9 +3,9 @@ package mate.academy.internetshop.model;
 import java.util.List;
 
 public class Bucket {
+    private Long userId;
     private Long Id;
     private List<Item> items;
-    private Long orderId;
 
     public Long getId() {
         return Id;
@@ -23,13 +23,11 @@ public class Bucket {
         this.items = items;
     }
 
-    public Long getOrderId() {
-        return orderId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
-
-
 }
