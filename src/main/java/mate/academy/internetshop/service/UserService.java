@@ -1,15 +1,7 @@
 package mate.academy.internetshop.service;
 
 import mate.academy.internetshop.model.User;
+import mate.academy.internetshop.service.impl.GenericService;
 
-public interface UserService {
-    User create(User user);
-
-    User get(Long userId);
-
-    User update(User user);
-
-    boolean delete(Long userId);
-
-    boolean delete(User user);
+public interface UserService extends GenericService<User, Long> {
 }

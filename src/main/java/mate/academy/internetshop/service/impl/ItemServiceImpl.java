@@ -2,7 +2,6 @@ package mate.academy.internetshop.service.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.Storage;
 import mate.academy.internetshop.library.Inject;
@@ -32,7 +31,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean deleteById(Long id) {
         return itemDao.deleteById(id);
     }
 

@@ -1,7 +1,6 @@
 package mate.academy.internetshop;
 
 import java.util.List;
-
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.library.Injector;
 import mate.academy.internetshop.model.Bucket;
