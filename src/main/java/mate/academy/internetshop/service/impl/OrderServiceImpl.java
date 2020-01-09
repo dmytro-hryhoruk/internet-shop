@@ -3,7 +3,6 @@ package mate.academy.internetshop.service.impl;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.Storage;
 import mate.academy.internetshop.library.Inject;
@@ -17,6 +16,7 @@ public class OrderServiceImpl implements OrderService {
     @Inject
     private static OrderDao orderDao;
 
+
     @Override
     public Order get(Long id) {
         return orderDao.get(id)
@@ -29,7 +29,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Order create(Order order) {
+        return orderDao.create(order);
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
         return orderDao.deleteById(id);
     }
 

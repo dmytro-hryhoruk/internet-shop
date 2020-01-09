@@ -2,7 +2,6 @@ package mate.academy.internetshop.service.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.library.Service;
@@ -32,7 +31,7 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public boolean delete(Long bucketId) {
+    public boolean deleteById(Long bucketId) {
         return bucketDao.deleteById(bucketId);
     }
 
