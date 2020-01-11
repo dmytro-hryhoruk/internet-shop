@@ -1,4 +1,6 @@
-package mate.academy.internetshop.service.impl;
+package mate.academy.internetshop.service;
+
+import java.util.List;
 
 public interface GenericService<T, ID> {
     T create(T entity);
@@ -10,4 +12,6 @@ public interface GenericService<T, ID> {
     boolean deleteById(ID entityId);
 
     boolean delete(T entity);
+
+    List<T> getAll();
 }

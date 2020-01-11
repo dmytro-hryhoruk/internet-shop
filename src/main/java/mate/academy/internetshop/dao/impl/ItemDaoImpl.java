@@ -1,5 +1,6 @@
 package mate.academy.internetshop.dao.impl;
 
+import java.util.List;
 import java.util.Optional;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.Storage;
@@ -53,5 +54,10 @@ public class ItemDaoImpl implements ItemDao {
                 .filter(item1 -> item1.getId().equals(item.getId()))
                 .findFirst();
         return Storage.items.remove(toBeDeletedItem.get());
+    }
+
+    @Override
+    public List<Item> getAll() {
+        return Storage.items;
     }
 }

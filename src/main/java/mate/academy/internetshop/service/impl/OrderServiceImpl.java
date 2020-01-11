@@ -7,6 +7,7 @@ import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.Storage;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.library.Service;
+import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.OrderService;
@@ -44,22 +45,27 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List getUserOrders(User user) {
+    public List<Order> getUserOrders(User user) {
         if (!Storage.users.contains(user)) {
             throw new NoSuchElementException("User you're trying to find, doesn't exist");
         }
-        return Storage.orders
+        return orderDao.getAll()
                 .stream()
                 .filter(o -> o.getUserId().equals(user.getId()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Order completeOrder(List items, User user) {
+    public Order completeOrder(List<Item> items, User user) {
         Order newOrder = new Order();
         newOrder.setItems(items);
         newOrder.setUserId(user.getId());
         orderDao.create(newOrder);
         return newOrder;
+    }
+
+    @Override
+    public List<Order> getAll() {
+        return orderDao.getAll();
     }
 }

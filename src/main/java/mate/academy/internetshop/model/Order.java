@@ -30,4 +30,13 @@ public class Order {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "userId=" + userId +
+                ", id=" + id +
+                ", items=" + items +
+                '}';
+    }
 }
