@@ -6,6 +6,7 @@
         button {
             width: 100px;
         }
+
     </style>
 </head>
 <body>
@@ -14,7 +15,7 @@
         <h1>Item Adding</h1>
         <label for="ItemName"><b>Item Name</b></label>
         <input type="text" name="ItemName" required>
-        <br>
+        <br><br>
         <label for="ItemPrice"><b>Item Price</b></label>
         <input type="text" name="ItemPrice" required>
         <br><br>
