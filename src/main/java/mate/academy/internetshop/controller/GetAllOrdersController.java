@@ -6,11 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import mate.academy.internetshop.library.Inject;
+import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.OrderService;
 
 public class GetAllOrdersController extends HttpServlet {
     @Inject
     private static OrderService orderService;
+    @Inject
+    private static BucketService bucketService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

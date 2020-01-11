@@ -8,6 +8,10 @@
         td {
             text-align: center;
         }
+
+        button {
+            width: 100px;
+        }
     </style>
 </head>
 <body>
@@ -34,6 +38,11 @@
         </tr>
     </c:forEach>
 </table>
+<br><br>
+<button onclick="location.href='/internet_shop_war_exploded/servlet/showBucket'" type="button">
+    Go To Bucket
+</button>
+<br><br>
 <button onclick="location.href='/internet_shop_war_exploded/servlet/mainMenu'" type="button">
     back to menu
 </button>

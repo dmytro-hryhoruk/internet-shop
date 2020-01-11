@@ -5,6 +5,21 @@
 <html>
 <head>
     <title>Bucket</title>
+    <style>
+        a.ui-button {
+            color: limegreen;
+            text-align: center;
+            text-decoration: none;
+            display: inline;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100px;
+        }
+    </style>
 </head>
 <body>
 <h1>ITEMS IN YOUR BUCKET:</h1>
@@ -31,10 +46,15 @@
         </tr>
     </c:forEach>
 </table>
-<a href="${pageContext.request.contextPath}/servlet/checkout?bucketId=${bucket.id}">
+<br>
+<a href="${pageContext.request.contextPath}/servlet/checkout?bucketId=${bucket.id}" class="ui-button">
     COMPLETE ORDER
 </a>
-<br>
+<br><br>
+<button onclick="location.href='/internet_shop_war_exploded/servlet/getAllItems'" type="button">
+    All Items
+</button>
+<br><br>
 <button onclick="location.href='/internet_shop_war_exploded/servlet/mainMenu'" type="button">
     back to menu
 </button>

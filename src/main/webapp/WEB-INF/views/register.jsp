@@ -2,9 +2,13 @@
 <html>
 <head>
     <title>Registration</title>
+    <style>
+        button {
+            width: 100px;
+        }
+    </style>
 </head>
 <body>
-Let's create a new User!
 <form action="${pageContext.request.contextPath}/servlet/registration" method="post">
     <div class="container">
         <h1>Register</h1>

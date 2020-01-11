@@ -4,6 +4,11 @@
 <html>
 <head>
     <title>All Users</title>
+    <style>
+        button {
+            width: 100px;
+        }
+    </style>
 </head>
 <body>
 <table border="1">

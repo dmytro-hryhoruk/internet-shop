@@ -4,6 +4,11 @@
 <html>
 <head>
     <title>Orders</title>
+    <style>
+        button {
+            width: 100px;
+        }
+    </style>
 </head>
 <body>
 <h1>ORDERS</h1>

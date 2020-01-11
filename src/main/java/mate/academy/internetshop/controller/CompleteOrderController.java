@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.Bucket;
-import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.OrderService;
@@ -31,6 +30,4 @@ public class CompleteOrderController extends HttpServlet {
         req.setAttribute("orders", orderService.getAll());
         req.getRequestDispatcher("/WEB-INF/views/allOrders.jsp").forward(req, resp);
     }
-
-
 }
