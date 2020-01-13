@@ -1,5 +1,6 @@
 package mate.academy.internetshop.dao.impl;
 
+import java.util.List;
 import java.util.Optional;
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.Storage;
@@ -53,5 +54,10 @@ public class OrderDaoImpl implements OrderDao {
                 .filter(o -> o.getId().equals(order.getId()))
                 .findFirst();
         return Storage.orders.remove(toBeDeletedOrder.get());
+    }
+
+    @Override
+    public List<Order> getAll() {
+        return Storage.orders;
     }
 }
