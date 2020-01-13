@@ -13,9 +13,9 @@ import mate.academy.internetshop.service.UserService;
 public class GetAllOrdersController extends HttpServlet {
     @Inject
     private static OrderService orderService;
-    private static final Long USER_ID = 1L;
     @Inject
     private static UserService userService;
+    private static final Long USER_ID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
