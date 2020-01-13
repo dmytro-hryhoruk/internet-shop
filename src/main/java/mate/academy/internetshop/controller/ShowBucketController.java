@@ -17,12 +17,12 @@ public class ShowBucketController extends HttpServlet {
     private static BucketService bucketService;
     @Inject
     private static OrderService orderService;
-    private static Long userId = 1L;
+    private static final Long USER_ID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        Bucket bucket = bucketService.getByUserId(userId);
+        Bucket bucket = bucketService.getByUserId(USER_ID);
         List<Item> items = bucket.getItems();
         req.setAttribute("items", items);
         req.setAttribute("bucket", bucket);
