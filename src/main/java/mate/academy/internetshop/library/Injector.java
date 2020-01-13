@@ -10,7 +10,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 public class Injector {
-    private static final String PROJECT_MAIN_PACKAGE = "mate.academy.internetshop";
+    private static final String PROJECT_MAIN_PACKAGE = "kmate.academy.internetshop";
     final static Logger logger = Logger.getLogger(Injector.class);
     private static List<Class> classes = new ArrayList<>();
 
