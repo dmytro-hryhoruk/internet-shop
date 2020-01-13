@@ -10,15 +10,12 @@ import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.ItemService;
-import mate.academy.internetshop.service.UserService;
 
 public class AddItemToBucketController extends HttpServlet {
     @Inject
     private static BucketService bucketService;
     @Inject
     private static ItemService itemService;
-    @Inject
-    private static UserService userService;
     private static final Long USER_ID = 1L;
 
     @Override

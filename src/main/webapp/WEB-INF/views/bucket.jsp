@@ -6,16 +6,6 @@
 <head>
     <title>Bucket</title>
     <style>
-        a.ui-button {
-            color: limegreen;
-            text-align: center;
-            text-decoration: none;
-            display: inline;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
-
         button {
             width: 100px;
         }
@@ -47,9 +37,9 @@
     </c:forEach>
 </table>
 <br>
-<a href="${pageContext.request.contextPath}/servlet/checkout?bucketId=${bucket.id}" class="ui-button">
+<button onclick="location.href='/internet_shop_war_exploded/servlet/checkout'" type="button">
     COMPLETE ORDER
-</a>
+</button>
 <br><br>
 <button onclick="location.href='/internet_shop_war_exploded/servlet/getAllItems'" type="button">
     All Items

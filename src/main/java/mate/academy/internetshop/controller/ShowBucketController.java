@@ -10,13 +10,10 @@ import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.BucketService;
-import mate.academy.internetshop.service.OrderService;
 
 public class ShowBucketController extends HttpServlet {
     @Inject
     private static BucketService bucketService;
-    @Inject
-    private static OrderService orderService;
     private static final Long USER_ID = 1L;
 
     @Override
@@ -28,6 +25,4 @@ public class ShowBucketController extends HttpServlet {
         req.setAttribute("bucket", bucket);
         req.getRequestDispatcher("/WEB-INF/views/bucket.jsp").forward(req, resp);
     }
-
-
 }
