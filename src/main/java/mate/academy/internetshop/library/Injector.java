@@ -18,7 +18,8 @@ public class Injector {
         try {
             classes.addAll(getClasses(PROJECT_MAIN_PACKAGE));
         } catch (ClassNotFoundException | IOException e) {
-            LOGGER.error(e);
+            LOGGER.error("Couldn't initialize all dependencies"+e);
+            throw new RuntimeException();
         }
     }
 
