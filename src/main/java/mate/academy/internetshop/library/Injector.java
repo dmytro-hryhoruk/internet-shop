@@ -11,14 +11,14 @@ import org.apache.log4j.Logger;
 
 public class Injector {
     private static final String PROJECT_MAIN_PACKAGE = "kmate.academy.internetshop";
-    final static Logger logger = Logger.getLogger(Injector.class);
+    private final static Logger LOGGER = Logger.getLogger(Injector.class);
     private static List<Class> classes = new ArrayList<>();
 
     static {
         try {
             classes.addAll(getClasses(PROJECT_MAIN_PACKAGE));
         } catch (ClassNotFoundException | IOException e) {
-            logger.error(e);
+            LOGGER.error(e);
         }
     }
 
