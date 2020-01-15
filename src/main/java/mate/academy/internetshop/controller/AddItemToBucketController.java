@@ -12,18 +12,19 @@ import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.ItemService;
 
 public class AddItemToBucketController extends HttpServlet {
+    private static final Long USER_ID = 1L;
     @Inject
     private static BucketService bucketService;
     @Inject
     private static ItemService itemService;
-    private static final Long USER_ID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        Long userId = (Long) req.getSession(true).getAttribute("userId");
         String itemId = req.getParameter("item_id");
         Item item = itemService.get(Long.valueOf(itemId));
-        Bucket bucket = bucketService.getByUserId(USER_ID);
+        Bucket bucket = bucketService.getByUserId(userId);
         bucketService.addItem(bucket, item);
         resp.sendRedirect(req.getContextPath() + "/servlet/getAllItems");
     }

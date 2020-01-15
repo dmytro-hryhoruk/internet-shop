@@ -11,11 +11,11 @@ import mate.academy.internetshop.service.OrderService;
 import mate.academy.internetshop.service.UserService;
 
 public class GetAllOrdersController extends HttpServlet {
+    private static final Long USER_ID = 1L;
     @Inject
     private static OrderService orderService;
     @Inject
     private static UserService userService;
-    private static final Long USER_ID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

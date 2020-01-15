@@ -31,7 +31,7 @@
 </head>
 <body>
 <h1>Main Menu</h1>
-<button onclick="location.href='/internet_shop_war_exploded/servlet/registration'" type="button">
+<button onclick="location.href='/internet_shop_war_exploded/registration'" type="button">
     Register
 </button>
 <br>

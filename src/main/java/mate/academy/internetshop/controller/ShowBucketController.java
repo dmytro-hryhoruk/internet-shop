@@ -12,9 +12,9 @@ import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.BucketService;
 
 public class ShowBucketController extends HttpServlet {
+    private static final Long USER_ID = 1L;
     @Inject
     private static BucketService bucketService;
-    private static final Long USER_ID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

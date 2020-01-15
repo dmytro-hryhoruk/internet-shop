@@ -42,7 +42,7 @@
         </tr>
     </c:forEach>
 </table>
-<form action="/internet_shop_war_exploded/servlet/registration">
+<form action="/internet_shop_war_exploded/registration">
     <button type="submit" style="
     color: limegreen;
     margin-left: 5px;
