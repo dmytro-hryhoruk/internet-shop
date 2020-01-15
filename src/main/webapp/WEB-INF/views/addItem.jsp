@@ -6,7 +6,6 @@
         button {
             width: 100px;
         }
-
     </style>
 </head>
 <body>
