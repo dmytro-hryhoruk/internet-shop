@@ -4,7 +4,7 @@ import java.util.Optional;
 import mate.academy.internetshop.model.User;
 
 public interface UserDao extends GenericDao<User, Long> {
-    Optional<User> getByLogin(String login, String password);
+    Optional<User> getByLogin(String login);
 
     Optional<User> getByToken(String token);
 }
