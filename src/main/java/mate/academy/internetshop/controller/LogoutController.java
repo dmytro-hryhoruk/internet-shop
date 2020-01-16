@@ -13,13 +13,14 @@ public class LogoutController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         HttpSession session = req.getSession();
-        session.setAttribute("userId", "");
+        session.setAttribute("userId", null);
         for (Cookie cookie : req.getCookies()) {
             if (cookie.getName().equals("MATE")) {
                 cookie.setMaxAge(0);
-                cookie.setValue("");
+                cookie.setValue(null);
+                resp.addCookie(cookie);
             }
         }
-        resp.sendRedirect(req.getContextPath()+ "/login");
+        resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

@@ -32,7 +32,6 @@ public class InjectDataController extends HttpServlet {
         admin.setLogin("dima1");
         admin.setPassword("1234");
         userService.create(admin);
-        //resp.sendRedirect(req.getContextPath()+"/login ");
-        req.getRequestDispatcher("/login").forward(req,resp);
+        resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

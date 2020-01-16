@@ -10,12 +10,15 @@ public class IdGenerator {
     public static Long getNewUserId() {
         return userId++;
     }
+
     public static Long getNewBucketId() {
         return bucketId++;
     }
+
     public static Long getNewOrderId() {
         return orderId++;
     }
+
     public static Long getNewItemId() {
         return itemId++;
     }
