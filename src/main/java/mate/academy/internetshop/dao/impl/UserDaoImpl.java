@@ -6,15 +6,15 @@ import mate.academy.internetshop.dao.Storage;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.library.Dao;
+import mate.academy.internetshop.model.IdGenerator;
 import mate.academy.internetshop.model.User;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-    private static Long userId = 1L;
 
     @Override
     public User create(User user) {
-        user.setId(userId++);
+        user.setId(IdGenerator.getNewUserId());
         Storage.users.add(user);
         return user;
     }

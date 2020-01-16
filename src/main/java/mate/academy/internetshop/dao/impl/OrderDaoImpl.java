@@ -5,15 +5,15 @@ import java.util.Optional;
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.Storage;
 import mate.academy.internetshop.library.Dao;
+import mate.academy.internetshop.model.IdGenerator;
 import mate.academy.internetshop.model.Order;
 
 @Dao
 public class OrderDaoImpl implements OrderDao {
-    private static Long orderId = 1L;
 
     @Override
     public Order create(Order order) {
-        order.setId(orderId++);
+        order.setId(IdGenerator.getNewOrderId());
         Storage.orders.add(order);
         return order;
     }
