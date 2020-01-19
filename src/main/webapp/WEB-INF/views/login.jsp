@@ -4,18 +4,9 @@
     <title>Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <style>
-        body {
-            font-size: 13px;
-        }
-
-        .login-blue {
-            background: linear-gradient(145deg, #2196F3, #3F51B5);
-        }
-    </style>
+    <style><%@include file="/WEB-INF/css/registrationCss.css"%></style>
 </head>
 <body>
-<div>${errorMsg}</div>
 <div class="row m-4">
     <div class="col-4">
         <div class="login-blue p-3 shadow-lg rounded">
@@ -24,6 +15,7 @@
             </div>
 
             <form class="mt-5" action="/internet_shop_war_exploded/login" method="post">
+                <div style="color: red">${errorMsg}</div>
                 <div class="form-group">
                     <input type="text" name="login"
                            class="form-control form-control-sm bg-light"
@@ -51,5 +43,6 @@
             </form>
         </div>
     </div>
+</div>
 </body>
 </html>

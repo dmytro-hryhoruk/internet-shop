@@ -38,8 +38,7 @@
             </td>
             <td>
                 <a href="/internet_shop_war_exploded/servlet/deleteItem?item_id=${item.id}"
-                   style="color: limegreen;
-                   text-align: center ;"
+                   style="color: darkred"
                 >DELETE</a>
             </td>
         </tr>

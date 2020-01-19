@@ -35,8 +35,7 @@
             </td>
             <td>
                 <a href="/internet_shop_war_exploded/servlet/deleteUser?user_id=${user.id}"
-                   style="color: darkred;
-                   background-color: lightcoral" ; method="post"
+                   style="color: darkred"  method="post"
                 >DELETE</a>
             </td>
         </tr>

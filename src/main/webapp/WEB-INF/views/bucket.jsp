@@ -29,8 +29,7 @@
             </td>
             <td>
                 <a href="/internet_shop_war_exploded/servlet/deleteItemFromBucket?item_id=${item.id}"
-                   style="color: darkred;
-                   background-color: lightcoral" ;
+                   style="color: darkred" ;
                 >DELETE</a>
             </td>
         </tr>
