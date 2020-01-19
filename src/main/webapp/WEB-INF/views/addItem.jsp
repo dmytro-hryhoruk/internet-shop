@@ -25,7 +25,7 @@
     All Items
 </button>
 <br><br>
-<button onclick="location.href='${pageContext.request.contextPath}/servlet/mainMenu'" type="button">
+<button onclick="location.href='${pageContext.request.contextPath}/servlet/Menu'" type="button">
     back to menu
 </button>
 </body>

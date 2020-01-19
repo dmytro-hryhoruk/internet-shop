@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getByToken(token);
     }
 
+
     private String getToken() {
         return UUID.randomUUID().toString();
     }

@@ -25,6 +25,7 @@ public class AddItemToBucketController extends HttpServlet {
         Item item = itemService.get(Long.valueOf(itemId));
         Bucket bucket = bucketService.getByUserId(userId);
         bucketService.addItem(bucket, item);
+        Bucket bucket1 = bucketService.getByUserId(userId);
         resp.sendRedirect(req.getContextPath() + "/servlet/getAllItems");
     }
 }
