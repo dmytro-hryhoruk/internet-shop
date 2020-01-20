@@ -1,45 +1,43 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
 <head>
     <title>Registration</title>
-    <style>
-        button {
-            width: 100px;
-        }
-    </style>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style><%@include file="/WEB-INF/css/registrationCss.css"%></style>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/registration" method="post">
-    <div class="container">
-        <h1>Register</h1>
-        <p>Please fill in this form to create an account.</p>
-        <hr>
-        <label for="login"><b>Login</b></label>
-        <input type="text" placeholder="Enter Login" name="login" required>
+<form class="form-horizontal" action="${pageContext.request.contextPath}/registration" method="post">
+    <div class="container register-form">
+        <div class="form">
+            <div class="note">
+                <p>CREATE NEW USER</p>
+            </div>
 
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
-
-        <label for="psw-repeat"><b>Repeat Password</b></label>
-        <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
-
-        <label for="user_name"><b>Name</b></label>
-        <input type="text" placeholder="Name" name="user_name" required>
-
-        <label for="user_surname"><b>Surname</b></label>
-        <input type="text" placeholder="Surname" name="user_surname" required>
-        <hr>
-
-        <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
-        <button type="submit">Register</button>
-    </div>
-    <div class="container signin">
-        <p>Already have an account? <a href="/internet_shop_war_exploded/login">Sign in</a>.</p>
+            <div class="form-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Your Login *" name="login"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Password *" name="psw"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Your Name *" name="user_name"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Your Surname *" name="user_surname"/>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btnSubmit">Submit</button>
+                <p>Already have an account? <a href="/internet_shop_war_exploded/login">Sign in</a></p>
+            </div>
+        </div>
     </div>
 </form>
-<br>
-<button onclick="location.href='/internet_shop_war_exploded/servlet/mainMenu'" type="button">
-    back to menu
-</button>
 </body>
 </html>

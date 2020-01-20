@@ -5,15 +5,15 @@ import java.util.Optional;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.Storage;
 import mate.academy.internetshop.library.Dao;
+import mate.academy.internetshop.model.IdGenerator;
 import mate.academy.internetshop.model.Item;
 
 @Dao
 public class ItemDaoImpl implements ItemDao {
-    private static Long itemId = 1L;
 
     @Override
     public Item create(Item item) {
-        item.setId(itemId++);
+        item.setId(IdGenerator.getNewItemId());
         Storage.items.add(item);
         return item;
     }

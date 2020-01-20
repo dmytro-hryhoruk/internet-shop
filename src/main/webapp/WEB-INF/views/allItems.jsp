@@ -20,6 +20,7 @@
         <th>Name</th>
         <th>Price</th>
         <th>Add to Bucket</th>
+        <th>Delete Item</th>
     </tr>
     <c:forEach var="item" items="${items}">
         <tr>
@@ -35,6 +36,11 @@
                    text-align: center ;"
                 >ADD</a>
             </td>
+            <td>
+                <a href="/internet_shop_war_exploded/servlet/deleteItem?item_id=${item.id}"
+                   style="color: darkred"
+                >DELETE</a>
+            </td>
         </tr>
     </c:forEach>
 </table>
@@ -43,7 +49,7 @@
     Go To Bucket
 </button>
 <br><br>
-<button onclick="location.href='/internet_shop_war_exploded/servlet/mainMenu'" type="button">
+<button onclick="location.href='/internet_shop_war_exploded/servlet/Menu'" type="button">
     back to menu
 </button>
 </body>

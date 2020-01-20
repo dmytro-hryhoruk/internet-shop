@@ -35,8 +35,7 @@
             </td>
             <td>
                 <a href="/internet_shop_war_exploded/servlet/deleteUser?user_id=${user.id}"
-                   style="color: darkred;
-                   background-color: lightcoral" ; method="post"
+                   style="color: darkred"  method="post"
                 >DELETE</a>
             </td>
         </tr>
@@ -54,7 +53,7 @@
     font-weight:700;">Add User
     </button>
 </form>
-<button onclick="location.href='/internet_shop_war_exploded/servlet/mainMenu'" type="button">
+<button onclick="location.href='/internet_shop_war_exploded/servlet/Menu'" type="button">
     back to menu
 </button>
 </body>

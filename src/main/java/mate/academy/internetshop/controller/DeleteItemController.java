@@ -6,26 +6,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import mate.academy.internetshop.library.Inject;
-import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
-import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.ItemService;
 
-public class AddItemToBucketController extends HttpServlet {
-    @Inject
-    private static BucketService bucketService;
+public class DeleteItemController extends HttpServlet {
     @Inject
     private static ItemService itemService;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        Long userId = (Long) req.getSession().getAttribute("userId");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String itemId = req.getParameter("item_id");
         Item item = itemService.get(Long.valueOf(itemId));
-        Bucket bucket = bucketService.getByUserId(userId);
-        bucketService.addItem(bucket, item);
-        Bucket bucket1 = bucketService.getByUserId(userId);
+        itemService.getAll().remove(item);
         resp.sendRedirect(req.getContextPath() + "/servlet/getAllItems");
     }
 }

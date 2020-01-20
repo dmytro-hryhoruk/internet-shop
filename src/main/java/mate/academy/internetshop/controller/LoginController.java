@@ -1,7 +1,6 @@
 package mate.academy.internetshop.controller;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,11 +28,10 @@ public class LoginController extends HttpServlet {
         String password = req.getParameter("psw");
         try {
             User user = userService.login(login, password);
-            Cookie cookie = new Cookie("MATE", user.getToken());
-            resp.addCookie(cookie);
             HttpSession session = req.getSession(true);
             session.setAttribute("userId", user.getId());
-            resp.sendRedirect(req.getContextPath() + "/servlet/mainMenu");
+            session.setAttribute("userToken", user.getToken());
+            resp.sendRedirect(req.getContextPath() + "/servlet/Menu");
         } catch (AuthenticationException e) {
             req.setAttribute("errorMsg", "Incorrect login or password!");
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);

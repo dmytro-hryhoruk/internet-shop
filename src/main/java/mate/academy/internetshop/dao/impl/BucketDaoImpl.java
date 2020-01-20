@@ -6,14 +6,14 @@ import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.Storage;
 import mate.academy.internetshop.library.Dao;
 import mate.academy.internetshop.model.Bucket;
+import mate.academy.internetshop.model.IdGenerator;
 
 @Dao
 public class BucketDaoImpl implements BucketDao {
-    private static Long bucketId = 1L;
 
     @Override
     public Bucket create(Bucket bucket) {
-        bucket.setId(bucketId++);
+        bucket.setId(IdGenerator.getNewBucketId());
         Storage.buckets.add(bucket);
         return bucket;
 

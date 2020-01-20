@@ -27,7 +27,7 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     public Bucket getByUserId(Long userId) {
-        return bucketDao.getByUserId(userId).orElse(new Bucket());
+        return bucketDao.getByUserId(userId).get();
     }
 
     @Override
