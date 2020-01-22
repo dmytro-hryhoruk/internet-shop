@@ -26,7 +26,6 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     public Item create(Item entity) {
         String query = String.format("INSERT INTO %s(name, price) VALUES('%s', %f)",
                 TABLE, entity.getName(), entity.getPrice());
-
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate(query);
         } catch (SQLException e) {
