@@ -30,7 +30,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate(query);
         } catch (SQLException e) {
-            logger.warn(e);
+            logger.error("couldn't add entity " + entity, e);
         }
         return entity;
     }
@@ -51,7 +51,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 return Optional.ofNullable(item);
             }
         } catch (SQLException e) {
-            logger.warn(e);
+            logger.warn("Can't get item with id = " + entityId);
         }
         return Optional.empty();
 
@@ -64,42 +64,34 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate(query);
         } catch (SQLException e) {
-            logger.warn(e);
+            logger.warn("Item couldn't be update", e);
         }
         return entity;
     }
 
     @Override
     public boolean deleteById(Long entityId) {
-        Optional<Item> item = get(entityId);
-        if (item.isPresent()) {
-            String query = String.format("DELETE FROM items WHERE item_id=%d", entityId);
-            try (Statement stmt = connection.createStatement()) {
-                stmt.executeUpdate(query);
-            } catch (SQLException e) {
-                logger.warn(e);
-                return false;
-            }
-            return true;
+        String query = String.format("DELETE FROM items WHERE item_id=%d", entityId);
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            logger.warn("Couldn't delete entity with id=" + entityId, e);
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override
     public boolean delete(Item entity) {
-        Optional<Item> item = get(entity.getId());
-        if (item.isPresent()) {
-            String query = String.format("DELETE FROM %s.items\n" +
-                    "WHERE item_id =%d;", DB_NAME, entity.getId());
-            try (Statement stmt = connection.createStatement()) {
-                stmt.executeUpdate(query);
-            } catch (SQLException e) {
-                logger.warn(e);
-                return false;
-            }
-            return true;
+        String query = String.format("DELETE FROM %s.items\n" +
+                "WHERE item_id =%d;", DB_NAME, entity.getId());
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            logger.warn("Couldn't delete entity " + entity, e);
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -119,7 +111,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 items.add(item);
             }
         } catch (SQLException e) {
-            logger.warn(e);
+            logger.warn("Couldn't get items", e);
         }
         return items;
     }
