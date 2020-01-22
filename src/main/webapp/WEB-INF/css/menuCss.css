@@ -24,12 +24,12 @@ button:hover {
 }
 
 html, body {
-      padding: 0px;
-      margin: 0px;
-      background: #191A1D;
-      font-family: 'Karla', sans-serif;
-      width: 100vw;
-  }
+    padding: 0px;
+    margin: 0px;
+    background: #191A1D;
+    font-family: 'Karla', sans-serif;
+    width: 100vw;
+}
 
 body * {
     margin: 0;
