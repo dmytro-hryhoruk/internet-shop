@@ -2,7 +2,9 @@
 <html>
 <head>
     <title>Main Menu</title>
-    <style><%@include file="/WEB-INF/css/menuCss.css"%></style>
+    <style>
+        <%@include file="/WEB-INF/css/menuCss.css" %>
+    </style>
 </head>
 <body>
 <nav>
