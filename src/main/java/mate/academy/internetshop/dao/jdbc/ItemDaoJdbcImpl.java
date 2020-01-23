@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.library.Dao;
@@ -24,7 +25,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
 
     @Override
     public Item create(Item entity) {
-        String query = String.format("INSERT INTO %s(name, price) VALUES('%s', %f)",
+        String query = String.format(Locale.ROOT,"INSERT INTO %s(name, price) VALUES('%s', %.2f)",
                 TABLE, entity.getName(), entity.getPrice());
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate(query);

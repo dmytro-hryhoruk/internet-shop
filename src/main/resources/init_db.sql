@@ -1,4 +1,4 @@
-CREATE SCHEMA `test` DEFAULT CHARACTER SET utf8;
+CREATE SCHEMA `internetshop` DEFAULT CHARACTER SET utf8;
 
 CREATE TABLE `internetshop`.`items`
 (
@@ -8,5 +8,9 @@ CREATE TABLE `internetshop`.`items`
     PRIMARY KEY (`item_id`)
 );
 
-INSERT INTO `internetshop`.`items` (`item_id`, `name`, `price`)
-VALUES ('', 'IPhone11', '1000');
+CREATE TABLE `internetshop`.`orders`
+(
+    `order_id` INT NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`order_id`)
+);
+
