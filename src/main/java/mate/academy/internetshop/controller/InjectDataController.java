@@ -24,21 +24,12 @@ public class InjectDataController extends HttpServlet {
         User user = new User();
         user.setName("Bob");
         user.setSurname("Martin");
-        user.addRole(Role.of("USER"));
+        user.addRole(Role.of("ADMIN"));
         user.setLogin("dima");
         user.setPassword("123");
         userService.create(user);
         Bucket newBucket = new Bucket();
         newBucket.setUserId(user.getId());
         bucketService.create(newBucket);
-
-        User admin = new User();
-        admin.setName("Richard");
-        admin.setSurname("Hempton");
-        admin.addRole(Role.of("ADMIN"));
-        admin.setLogin("dima1");
-        admin.setPassword("1234");
-        userService.create(admin);
-        resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

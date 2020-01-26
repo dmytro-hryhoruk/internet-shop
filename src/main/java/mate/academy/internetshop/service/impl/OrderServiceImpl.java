@@ -2,9 +2,7 @@ package mate.academy.internetshop.service.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import mate.academy.internetshop.dao.OrderDao;
-import mate.academy.internetshop.dao.Storage;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.library.Service;
 import mate.academy.internetshop.model.Item;
@@ -46,13 +44,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getUserOrders(User user) {
-        if (!Storage.users.contains(user)) {
-            throw new NoSuchElementException("User you're trying to find, doesn't exist");
-        }
-        return orderDao.getAll()
-                .stream()
-                .filter(o -> o.getUserId().equals(user.getId()))
-                .collect(Collectors.toList());
+        return orderDao.getUserOrders(user);
+
     }
 
     @Override

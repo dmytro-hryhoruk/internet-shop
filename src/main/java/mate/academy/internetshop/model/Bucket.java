@@ -6,11 +6,8 @@ import java.util.List;
 public class Bucket {
     private Long userId;
     private Long id;
-    private List<Item> items;
+    private List<Item> items = new ArrayList<>();
 
-    public Bucket() {
-        this.items = new ArrayList<>();
-    }
 
     public Long getId() {
         return id;

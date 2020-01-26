@@ -1,12 +1,12 @@
 package mate.academy.internetshop.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.library.Dao;
@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 @Dao
 public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     private static String DB_NAME = "internetshop";
-    private static String TABLE = "items";
+    private static String TABLE = "internetshop.items";
     private static Logger logger = Logger.getLogger(ItemDaoJdbcImpl.class);
 
     public ItemDaoJdbcImpl(Connection connection) {
@@ -24,22 +24,28 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     }
 
     @Override
-    public Item create(Item entity) {
-        String query = String.format(Locale.ROOT,"INSERT INTO %s(name, price) VALUES('%s', %.2f)",
-                TABLE, entity.getName(), entity.getPrice());
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate(query);
+    public Item create(Item item) {
+        String query = "INSERT INTO items(name, price) VALUES(?,?);";
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, item.getName());
+            stmt.setDouble(2, item.getPrice());
+            stmt.executeUpdate();
+            ResultSet resultSet = stmt.getGeneratedKeys();
+            while (resultSet.next()) {
+                item.setId(resultSet.getLong(1));
+            }
         } catch (SQLException e) {
-            logger.error("couldn't add entity " + entity, e);
+            logger.error("couldn't add item " + item, e);
         }
-        return entity;
+        return item;
     }
 
     @Override
     public Optional<Item> get(Long entityId) {
-        String query = String.format("SELECT * FROM %s WHERE item_id=%d", TABLE, entityId);
-        try (Statement stmt = connection.createStatement()) {
-            ResultSet rs = stmt.executeQuery(query);
+        String query = "SELECT * FROM items WHERE item_id = ?;";
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setLong(1, entityId);
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Long item_id = rs.getLong("item_id");
                 String name = rs.getString("name");
@@ -51,7 +57,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 return Optional.ofNullable(item);
             }
         } catch (SQLException e) {
-            logger.warn("Can't get item with id = " + entityId);
+            logger.warn("Can't get item with id = " + entityId, e);
         }
         return Optional.empty();
 
@@ -59,10 +65,12 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
 
     @Override
     public Item update(Item entity) {
-        String query = String.format("UPDATE items SET name='%s', price=%f WHERE item_id=%d",
-                entity.getName(), entity.getPrice(), entity.getId());
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate(query);
+        String query = "UPDATE items SET name=?, price=? WHERE item_id=?;";
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, entity.getName());
+            stmt.setDouble(2, entity.getPrice());
+            stmt.setLong(3, entity.getId());
+            stmt.executeUpdate();
         } catch (SQLException e) {
             logger.warn("Item couldn't be update", e);
         }
@@ -70,36 +78,29 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     }
 
     @Override
-    public boolean deleteById(Long entityId) {
-        String query = String.format("DELETE FROM items WHERE item_id=%d", entityId);
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate(query);
+    public boolean deleteById(Long itemId) {
+        String query = "DELETE FROM items WHERE item_id=?;";
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setLong(1, itemId);
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            logger.warn("Couldn't delete entity with id=" + entityId, e);
+            logger.warn("Couldn't delete item with id=" + itemId, e);
             return false;
         }
         return true;
     }
 
     @Override
-    public boolean delete(Item entity) {
-        String query = String.format("DELETE FROM %s.items\n" +
-                "WHERE item_id =%d;", DB_NAME, entity.getId());
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate(query);
-        } catch (SQLException e) {
-            logger.warn("Couldn't delete entity " + entity, e);
-            return false;
-        }
-        return true;
+    public boolean delete(Item item) {
+        return deleteById(item.getId());
     }
 
     @Override
     public List<Item> getAll() {
         List<Item> items = new ArrayList<>();
-        String query = String.format("SELECT * FROM %s", TABLE);
-        try (Statement stmt = connection.createStatement()) {
-            ResultSet rs = stmt.executeQuery(query);
+        String query = "SELECT * FROM items;";
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Long item_id = rs.getLong("item_id");
                 String name = rs.getString("name");
@@ -111,7 +112,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 items.add(item);
             }
         } catch (SQLException e) {
-            logger.warn("Couldn't get items", e);
+            logger.warn("Couldn't get all items", e);
         }
         return items;
     }

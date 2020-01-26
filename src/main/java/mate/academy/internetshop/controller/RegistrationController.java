@@ -40,8 +40,8 @@ public class RegistrationController extends HttpServlet {
         session.setAttribute("userId", user.getId());
         session.setAttribute("userToken", user.getToken());
         Bucket newBucket = new Bucket();
-        newBucket.setUserId(newUser.getId());
+        newBucket.setUserId(user.getId());
         bucketService.create(newBucket);
-        resp.sendRedirect(req.getContextPath() + "/servlet/getAllUsers");
+        resp.sendRedirect(req.getContextPath() + "/servlet/Menu");
     }
 }
