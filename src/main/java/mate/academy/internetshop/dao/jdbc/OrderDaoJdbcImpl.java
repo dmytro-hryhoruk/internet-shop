@@ -103,8 +103,22 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
 
     @Override
     public Order update(Order order) {
-        deleteById(order.getId());
-        return create(order);
+        deleteOrderItems(order);
+        setOrderItems(order);
+        return order;
+    }
+
+    private Boolean deleteOrderItems(Order order) {
+        String deleteOrderItems =
+                "delete from orders_items where order_id =?;";
+        try (PreparedStatement statement = connection.prepareStatement(deleteOrderItems)) {
+            statement.setLong(1, order.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.warn("Can't update order", e);
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -121,8 +121,22 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public Bucket update(Bucket bucket) {
-        deleteById(bucket.getId());
-        return create(bucket);
+        deleteBucketItems(bucket);
+        setBucketItems(bucket);
+        return bucket;
+    }
+
+    private Boolean deleteBucketItems(Bucket bucket) {
+        String deleteBucketItems =
+                "delete from buckets_items where bucket_id =?;";
+        try (PreparedStatement statement = connection.prepareStatement(deleteBucketItems)) {
+            statement.setLong(1, bucket.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.warn("Can't update bucket", e);
+            return false;
+        }
+        return true;
     }
 
     @Override
