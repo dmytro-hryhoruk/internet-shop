@@ -1,9 +1,10 @@
 package mate.academy.internetshop.dao;
 
 import java.util.List;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.User;
 
 public interface OrderDao extends GenericDao<Order, Long> {
-    List<Order> getUserOrders(User user);
+    List<Order> getUserOrders(User user) throws DataProcessingException;
 }

@@ -6,26 +6,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.internetshop.dao.OrderDao;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Dao;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.User;
-import org.apache.log4j.Logger;
 
 @Dao
 public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
-    private static Logger logger = Logger.getLogger(OrderDaoJdbcImpl.class);
 
     public OrderDaoJdbcImpl(Connection connection) {
         super(connection);
     }
 
     @Override
-    public Order create(Order order) {
+    public Order create(Order order) throws DataProcessingException {
         String query = "INSERT INTO orders(user_id) VALUES(?);";
         try (PreparedStatement stmt =
                      connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -38,12 +36,11 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
             setOrderItems(order);
             return order;
         } catch (SQLException e) {
-            logger.error("couldn't add order " + order, e);
+            throw new DataProcessingException("couldn't add order " + order, e);
         }
-        return null;
     }
 
-    private void setOrderItems(Order order) {
+    private void setOrderItems(Order order) throws DataProcessingException {
         String query = "INSERT INTO orders_items(order_id,item_id) VALUES(?,?);";
         try (PreparedStatement stmt =
                      connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -53,33 +50,32 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
                 stmt.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.error("couldn't set order items " + order, e);
+            throw new DataProcessingException("couldn't set order items " + order, e);
         }
     }
 
     @Override
-    public Optional<Order> get(Long orderId) {
+    public Optional<Order> get(Long orderId) throws DataProcessingException {
         String query = "SELECT * FROM orders " +
                 "WHERE order_id =? ";
         try (PreparedStatement stmt =
                      connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, orderId);
             ResultSet rs = stmt.executeQuery();
+            Order order = new Order();
             while (rs.next()) {
                 Long user_id = rs.getLong("user_id");
-                Order order = new Order();
                 order.setItems(getOrderItems(orderId));
                 order.setId(orderId);
                 order.setUserId(user_id);
-                return Optional.of(order);
             }
+            return Optional.of(order);
         } catch (SQLException e) {
-            logger.warn("Can't get order with id = " + orderId, e);
+            throw new DataProcessingException("Can't get order with id = " + orderId, e);
         }
-        return Optional.empty();
     }
 
-    private List<Item> getOrderItems(Long orderId) {
+    private List<Item> getOrderItems(Long orderId) throws DataProcessingException {
         List<Item> items = new ArrayList<>();
         String query = "SELECT * FROM orders_items o " +
                 "JOIN items i ON o.order_id =? AND o.item_id = i.item_id;";
@@ -99,19 +95,18 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
             }
             return items;
         } catch (SQLException e) {
-            logger.warn("Can't get order items = " + orderId, e);
-            return Collections.emptyList();
+            throw new DataProcessingException("Can't get order items = " + orderId, e);
         }
     }
 
     @Override
-    public Order update(Order order) {
+    public Order update(Order order) throws DataProcessingException {
         deleteOrderItems(order);
         setOrderItems(order);
         return order;
     }
 
-    private Boolean deleteOrderItems(Order order) {
+    private Boolean deleteOrderItems(Order order) throws DataProcessingException {
         String deleteOrderItems = "DELETE FROM orders_items WHERE order_id =?;";
         try (PreparedStatement statement =
                      connection.prepareStatement(deleteOrderItems)) {
@@ -119,13 +114,12 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            logger.warn("Can't update order", e);
-            return false;
+            throw new DataProcessingException("Can't update order", e);
         }
     }
 
     @Override
-    public boolean deleteById(Long orderId) {
+    public boolean deleteById(Long orderId) throws DataProcessingException {
         String query = "DELETE FROM orders WHERE order_id = ?";
         try (PreparedStatement stmt =
                      connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -133,31 +127,29 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            logger.warn("Can't get delete order with id = " + orderId, e);
-            return false;
+            throw new DataProcessingException("Can't get delete order with id = " + orderId, e);
         }
     }
 
     @Override
-    public boolean delete(Order order) {
+    public boolean delete(Order order) throws DataProcessingException {
         return deleteById(order.getId());
     }
 
     @Override
-    public List<Order> getAll() {
+    public List<Order> getAll() throws DataProcessingException {
         String query = "SELECT * FROM orders;";
         try (PreparedStatement stmt =
                      connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             ResultSet resultSet = stmt.executeQuery();
             return getOrdersFromResultSet(resultSet);
         } catch (SQLException e) {
-            logger.warn("Can't get orders ", e);
-            return Collections.emptyList();
+            throw new DataProcessingException("Can't get orders ", e);
         }
     }
 
     @Override
-    public List<Order> getUserOrders(User user) {
+    public List<Order> getUserOrders(User user) throws DataProcessingException {
         String query = "SELECT * FROM orders WHERE user_id = ?;";
         try (PreparedStatement stmt =
                      connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -165,12 +157,12 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
             ResultSet resultSet = stmt.executeQuery();
             return getOrdersFromResultSet(resultSet);
         } catch (SQLException e) {
-            logger.warn("Can't get user orders  " + user, e);
-            return Collections.emptyList();
+            throw new DataProcessingException("Can't get user orders  " + user, e);
         }
     }
 
-    private List<Order> getOrdersFromResultSet(ResultSet resultSet) throws SQLException {
+    private List<Order> getOrdersFromResultSet(ResultSet resultSet) throws SQLException,
+            DataProcessingException {
         List<Order> orders = new ArrayList<>();
         while (resultSet.next()) {
             Long order_id = resultSet.getLong("order_id");

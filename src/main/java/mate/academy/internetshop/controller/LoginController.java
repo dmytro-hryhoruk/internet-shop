@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import mate.academy.internetshop.exceptions.AuthenticationException;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
@@ -35,9 +36,9 @@ public class LoginController extends HttpServlet {
         } catch (AuthenticationException e) {
             req.setAttribute("errorMsg", "Incorrect login or password!");
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+        } catch (DataProcessingException e) {
+            req.setAttribute("errMsg", e);
+            req.getRequestDispatcher("/WEB-INF/views/dbErrorPage.jsp").forward(req, resp);
         }
-
     }
-
-
 }

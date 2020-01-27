@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
@@ -22,10 +23,15 @@ public class AddItemToBucketController extends HttpServlet {
             throws ServletException, IOException {
         Long userId = (Long) req.getSession().getAttribute("userId");
         String itemId = req.getParameter("item_id");
-        Item item = itemService.get(Long.valueOf(itemId));
-        Bucket bucket = bucketService.getByUserId(userId);
-        bucketService.addItem(bucket, item);
-        Bucket bucket1 = bucketService.getByUserId(userId);
+        try {
+            Item item = itemService.get(Long.valueOf(itemId));
+            Bucket bucket = bucketService.getByUserId(userId);
+            bucketService.addItem(bucket, item);
+            Bucket bucket1 = bucketService.getByUserId(userId);
+        } catch (DataProcessingException e) {
+            req.setAttribute("errMsg", e);
+            req.getRequestDispatcher("/WEB-INF/views/dbErrorPage.jsp").forward(req, resp);
+        }
         resp.sendRedirect(req.getContextPath() + "/servlet/getAllItems");
     }
 }

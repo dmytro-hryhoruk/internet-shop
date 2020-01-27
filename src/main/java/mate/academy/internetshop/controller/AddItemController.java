@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.ItemService;
@@ -25,7 +26,12 @@ public class AddItemController extends HttpServlet {
         Item newItem = new Item();
         newItem.setName(req.getParameter("ItemName"));
         newItem.setPrice(Double.parseDouble(req.getParameter("ItemPrice")));
-        itemService.create(newItem);
+        try {
+            itemService.create(newItem);
+        } catch (DataProcessingException e) {
+            req.setAttribute("errMsg", e);
+            req.getRequestDispatcher("/WEB-INF/views/dbErrorPage.jsp").forward(req, resp);
+        }
         resp.sendRedirect(req.getContextPath() + "/servlet/addItem");
     }
 }

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collections;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Role;
@@ -35,13 +36,18 @@ public class RegistrationController extends HttpServlet {
         newUser.setName(req.getParameter("user_name"));
         newUser.setSurname(req.getParameter("user_surname"));
         newUser.setRoles(Collections.singleton(Role.of("USER")));
-        User user = userService.create(newUser);
-        HttpSession session = req.getSession(true);
-        session.setAttribute("userId", user.getId());
-        session.setAttribute("userToken", user.getToken());
-        Bucket newBucket = new Bucket();
-        newBucket.setUserId(user.getId());
-        bucketService.create(newBucket);
+        try {
+            User user = userService.create(newUser);
+            HttpSession session = req.getSession(true);
+            session.setAttribute("userId", user.getId());
+            session.setAttribute("userToken", user.getToken());
+            Bucket newBucket = new Bucket();
+            newBucket.setUserId(user.getId());
+            bucketService.create(newBucket);
+        } catch (DataProcessingException e) {
+            req.setAttribute("errMsg", e);
+            req.getRequestDispatcher("/WEB-INF/views/dbErrorPage.jsp").forward(req, resp);
+        }
         resp.sendRedirect(req.getContextPath() + "/servlet/Menu");
     }
 }
