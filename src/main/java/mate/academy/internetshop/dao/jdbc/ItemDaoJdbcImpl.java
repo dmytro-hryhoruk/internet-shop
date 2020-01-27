@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.internetshop.dao.ItemDao;
@@ -15,8 +16,6 @@ import org.apache.log4j.Logger;
 
 @Dao
 public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
-    private static String DB_NAME = "internetshop";
-    private static String TABLE = "internetshop.items";
     private static Logger logger = Logger.getLogger(ItemDaoJdbcImpl.class);
 
     public ItemDaoJdbcImpl(Connection connection) {
@@ -43,7 +42,8 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     @Override
     public Optional<Item> get(Long entityId) {
         String query = "SELECT * FROM items WHERE item_id = ?;";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, entityId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -57,7 +57,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 return Optional.ofNullable(item);
             }
         } catch (SQLException e) {
-            logger.warn("Can't get item with id = " + entityId, e);
+            logger.error("Can't get item with id = " + entityId, e);
         }
         return Optional.empty();
 
@@ -66,13 +66,14 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     @Override
     public Item update(Item entity) {
         String query = "UPDATE items SET name=?, price=? WHERE item_id=?;";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, entity.getName());
             stmt.setDouble(2, entity.getPrice());
             stmt.setLong(3, entity.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            logger.warn("Item couldn't be update", e);
+            logger.error("Item couldn't be update", e);
         }
         return entity;
     }
@@ -80,14 +81,15 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     @Override
     public boolean deleteById(Long itemId) {
         String query = "DELETE FROM items WHERE item_id=?;";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, itemId);
             stmt.executeUpdate();
+            return true;
         } catch (SQLException e) {
-            logger.warn("Couldn't delete item with id=" + itemId, e);
+            logger.error("Couldn't delete item with id=" + itemId, e);
             return false;
         }
-        return true;
     }
 
     @Override
@@ -111,9 +113,10 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 item.setId(item_id);
                 items.add(item);
             }
+            return items;
         } catch (SQLException e) {
-            logger.warn("Couldn't get all items", e);
+            logger.error("Couldn't get all items", e);
+            return Collections.emptyList();
         }
-        return items;
     }
 }

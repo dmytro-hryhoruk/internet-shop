@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.internetshop.dao.UserDao;
@@ -16,9 +17,7 @@ import org.apache.log4j.Logger;
 
 @Dao
 public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
-    private static String DB_NAME = "internetshop";
-    private static String TABLE = "internetshop.orders";
-    private static Logger logger = Logger.getLogger(OrderDaoJdbcImpl.class);
+    private static Logger logger = Logger.getLogger(UserDaoJdbcImpl.class);
 
     public UserDaoJdbcImpl(Connection connection) {
         super(connection);
@@ -30,7 +29,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 "JOIN users_roles ON users.login= ? " +
                 "AND users.user_id = users_roles.user_id " +
                 "JOIN roles ON users_roles.role_id = roles.role_id;";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, login);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -49,7 +49,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 "JOIN users_roles ON users.token= ? " +
                 "AND users.user_id = users_roles.user_id " +
                 "JOIN roles ON users_roles.role_id = roles.role_id;";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, token);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -65,7 +66,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     @Override
     public User create(User user) {
         String query = "INSERT INTO users(name,surname,login,password,token) VALUES(?,?,?,?,?);";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getSurname());
             stmt.setString(3, user.getLogin());
@@ -87,7 +89,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     private void setRoles(User user) {
         String query = "INSERT INTO users_roles (user_id, role_id) VALUES"
                 + " (?, (SELECT role_id FROM roles WHERE role_name = ?));";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             for (Role role : user.getRoles()) {
                 stmt.setLong(1, user.getId());
                 stmt.setString(2, String.valueOf(role.getRoleName()));
@@ -100,14 +103,15 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     private boolean deleteRoles(User user) {
         String query = "DELETE FROM users_roles WHERE user_id = ?;";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, user.getId());
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
             logger.error("couldn't delete roles for user " + user, e);
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -115,7 +119,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         String query = "SELECT * FROM users " +
                 "JOIN users_roles ON users.user_id = ? AND users.user_id = users_roles.user_id " +
                 "JOIN roles ON users_roles.role_id = roles.role_id;";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, userId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -132,7 +137,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     public User update(User user) {
         String query = "UPDATE users SET name = ?, surname = ?,login = ?, password = ?, token = ? "
                 + "WHERE user_id = ?;";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getSurname());
             stmt.setString(3, user.getLogin());
@@ -152,14 +158,15 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     @Override
     public boolean deleteById(Long userId) {
         String query = "DELETE FROM users WHERE user_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, userId);
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
             logger.error("couldn't delete user with id = " + userId, e);
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -172,7 +179,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         String query = "SELECT * FROM users " +
                 "JOIN users_roles ON  users.user_id = users_roles.user_id " +
                 "JOIN roles ON users_roles.role_id = roles.role_id;";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             List<User> users = new ArrayList<>();
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -182,7 +190,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         } catch (SQLException e) {
             logger.error("couldn't get users ", e);
         }
-        return null;
+        return Collections.emptyList();
     }
 
     private User getUserFromResultSet(ResultSet rs) throws SQLException {
