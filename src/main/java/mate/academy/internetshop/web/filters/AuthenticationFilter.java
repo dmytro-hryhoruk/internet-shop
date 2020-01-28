@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
@@ -42,14 +43,19 @@ public class AuthenticationFilter implements Filter {
             processUnAuthenticated(req, resp);
             return;
         }
-        Optional<User> user = userService.getByToken(userToken);
-        if (user.isPresent()) {
-            LOGGER.info("User " + user.get().getLogin() + " was authenticated.");
-            chain.doFilter(servletRequest, servletResponse);
-            return;
+        try {
+            Optional<User> user = userService.getByToken(userToken);
+            if (user.isPresent()) {
+                LOGGER.info("User " + user.get().getLogin() + " was authenticated.");
+                chain.doFilter(servletRequest, servletResponse);
+                return;
+            }
+            LOGGER.info("User was't authenticated.");
+            processUnAuthenticated(req, resp);
+        } catch (DataProcessingException e) {
+            req.setAttribute("errMsg", e);
+            req.getRequestDispatcher("/WEB-INF/views/dbErrorPage.jsp").forward(req, resp);
         }
-        LOGGER.info("User was't authenticated.");
-        processUnAuthenticated(req, resp);
     }
 
     private void processUnAuthenticated(HttpServletRequest req, HttpServletResponse resp)

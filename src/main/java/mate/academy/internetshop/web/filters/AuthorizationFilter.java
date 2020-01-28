@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
@@ -55,11 +56,16 @@ public class AuthorizationFilter implements Filter {
             processAuthenticated(chain, req, resp);
             return;
         }
-        User user = userService.getByToken(userToken).get();
-        if (verifyRole(user, roleName)) {
-            processAuthenticated(chain, req, resp);
-        } else {
-            processDenied(req, resp);
+        try {
+            User user = userService.getByToken(userToken).get();
+            if (verifyRole(user, roleName)) {
+                processAuthenticated(chain, req, resp);
+            } else {
+                processDenied(req, resp);
+            }
+        } catch (DataProcessingException e) {
+            req.setAttribute("errMsg", e);
+            req.getRequestDispatcher("/WEB-INF/views/dbErrorPage.jsp").forward(req, resp);
         }
     }
 
@@ -83,7 +89,5 @@ public class AuthorizationFilter implements Filter {
                                       HttpServletResponse resp)
             throws IOException, ServletException {
         chain.doFilter(req, resp);
-
     }
-
 }
