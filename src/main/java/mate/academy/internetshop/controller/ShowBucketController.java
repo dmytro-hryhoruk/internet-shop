@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
@@ -19,7 +20,13 @@ public class ShowBucketController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Long userId = (Long) req.getSession().getAttribute("userId");
-        Bucket bucket = bucketService.getByUserId(userId);
+        Bucket bucket = null;
+        try {
+            bucket = bucketService.getByUserId(userId);
+        } catch (DataProcessingException e) {
+            req.setAttribute("errMsg", e);
+            req.getRequestDispatcher("/WEB-INF/views/dbErrorPage.jsp").forward(req, resp);
+        }
         List<Item> items = bucket.getItems();
         req.setAttribute("items", items);
         req.setAttribute("bucket", bucket);
