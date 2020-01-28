@@ -14,6 +14,7 @@ import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.UserService;
+import mate.academy.internetshop.util.HashUtil;
 
 public class RegistrationController extends HttpServlet {
     @Inject
@@ -31,8 +32,9 @@ public class RegistrationController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         User newUser = new User();
+        newUser.setSalt(HashUtil.getSalt());
         newUser.setLogin(req.getParameter("login"));
-        newUser.setPassword(req.getParameter("psw"));
+        newUser.setPassword(HashUtil.hashPassword(req.getParameter("psw"), newUser.getSalt()));
         newUser.setName(req.getParameter("user_name"));
         newUser.setSurname(req.getParameter("user_surname"));
         newUser.setRoles(Collections.singleton(Role.of("USER")));
@@ -45,7 +47,7 @@ public class RegistrationController extends HttpServlet {
             newBucket.setUserId(user.getId());
             bucketService.create(newBucket);
         } catch (DataProcessingException e) {
-            req.setAttribute("errMsg", e);
+            req.setAttribute("errMsg", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/dbErrorPage.jsp").forward(req, resp);
         }
         resp.sendRedirect(req.getContextPath() + "/servlet/Menu");
