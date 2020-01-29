@@ -11,6 +11,7 @@ import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.library.Service;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
+import mate.academy.internetshop.util.HashUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,6 +20,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) throws DataProcessingException {
+        user.setSalt(HashUtil.getSalt());
+        user.setPassword(HashUtil.hashPassword(user.getPassword(),user.getSalt()));
         user.setToken(getToken());
         return userDao.create(user);
     }
@@ -64,9 +67,14 @@ public class UserServiceImpl implements UserService {
     public User login(String login, String password)
             throws AuthenticationException, DataProcessingException {
         Optional<User> user = userDao.getByLogin(login);
-        if (user.isEmpty() || !user.get().getPassword().equals(password)) {
+        if (user.isEmpty() || !isValid(user.get(), password)) {
             throw new AuthenticationException("Incorrect user name or password");
         }
         return user.get();
+    }
+
+    private boolean isValid(User user, String password) {
+        return HashUtil.hashPassword(password, user.getSalt())
+                .equals(user.getPassword());
     }
 }
