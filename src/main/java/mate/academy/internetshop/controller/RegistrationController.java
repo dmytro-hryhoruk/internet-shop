@@ -1,12 +1,14 @@
 package mate.academy.internetshop.controller;
 
+import java.io.IOException;
+import java.util.Collections;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.Collections;
+
 import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.Bucket;
@@ -14,7 +16,6 @@ import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.UserService;
-import mate.academy.internetshop.util.HashUtil;
 
 public class RegistrationController extends HttpServlet {
     @Inject

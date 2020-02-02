@@ -2,6 +2,7 @@ package mate.academy.internetshop.controller;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
 import mate.academy.internetshop.library.Injector;
 
 public class InjectInitializer implements ServletContextListener {

@@ -3,6 +3,7 @@ package mate.academy.internetshop.factory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.OrderDao;
@@ -37,8 +38,8 @@ public class Factory {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection =
-                    DriverManager.getConnection("jdbc:mysql://localhost:3306/internetshop?" +
-                            "user=root&password=1234&serverTimezone=UTC");
+                    DriverManager.getConnection("jdbc:mysql://localhost:3306/internetshop?"
+                            + "user=root&password=1234&serverTimezone=UTC");
 
         } catch (SQLException | ClassNotFoundException e) {
             logger.error("Can't established connection to our DB", e);

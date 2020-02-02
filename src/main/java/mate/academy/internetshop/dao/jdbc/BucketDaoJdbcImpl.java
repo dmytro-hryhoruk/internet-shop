@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Dao;
@@ -20,7 +21,6 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     public BucketDaoJdbcImpl(Connection connection) {
         super(connection);
     }
-
 
     @Override
     public Bucket create(Bucket bucket) throws DataProcessingException {
@@ -56,18 +56,18 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public Optional<Bucket> get(Long bucketId) throws DataProcessingException {
-        String query = "SELECT * FROM buckets " +
-                "WHERE bucket_id =? ";
+        String query = "SELECT * FROM buckets "
+                + "WHERE bucket_id =? ";
         try (PreparedStatement stmt =
                      connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, bucketId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Long user_id = rs.getLong("user_id");
+                Long userId = rs.getLong("user_id");
                 Bucket bucket = new Bucket();
                 bucket.setItems(getBucketItems(bucketId));
                 bucket.setId(bucketId);
-                bucket.setUserId(user_id);
+                bucket.setUserId(userId);
                 return Optional.of(bucket);
             }
         } catch (SQLException e) {
@@ -78,17 +78,17 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public Optional<Bucket> getByUserId(Long userId) throws DataProcessingException {
-        String query = "SELECT * FROM buckets " +
-                "WHERE user_id =? ";
+        String query = "SELECT * FROM buckets "
+                + "WHERE user_id =? ";
         try (PreparedStatement stmt =
                      connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, userId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Long bucket_id = rs.getLong("bucket_id");
+                Long bucketId = rs.getLong("bucket_id");
                 Bucket bucket = new Bucket();
-                bucket.setItems(getBucketItems(bucket_id));
-                bucket.setId(bucket_id);
+                bucket.setItems(getBucketItems(bucketId));
+                bucket.setId(bucketId);
                 bucket.setUserId(userId);
                 return Optional.of(bucket);
             }
@@ -100,20 +100,20 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
 
     private List<Item> getBucketItems(Long bucketId) throws DataProcessingException {
         List<Item> items = new ArrayList<>();
-        String query = "SELECT * FROM buckets_items o " +
-                "JOIN items i ON o.bucket_id =? AND o.item_id = i.item_id;";
+        String query = "SELECT * FROM buckets_items o "
+                + "JOIN items i ON o.bucket_id =? AND o.item_id = i.item_id;";
         try (PreparedStatement stmt =
                      connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, bucketId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Long item_id = rs.getLong("item_id");
+                Long itemId = rs.getLong("item_id");
                 String name = rs.getString("name");
                 double price = rs.getDouble("price");
                 Item item = new Item();
                 item.setName(name);
                 item.setPrice(price);
-                item.setId(item_id);
+                item.setId(itemId);
                 items.add(item);
             }
             return items;
@@ -168,8 +168,8 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
             ResultSet resultSet = stmt.executeQuery();
             List<Bucket> buckets = new ArrayList<>();
             while (resultSet.next()) {
-                Long bucket_id = resultSet.getLong("order_id");
-                Bucket bucket = get(bucket_id).get();
+                Long bucketId = resultSet.getLong("order_id");
+                Bucket bucket = get(bucketId).get();
                 buckets.add(bucket);
             }
             return buckets;

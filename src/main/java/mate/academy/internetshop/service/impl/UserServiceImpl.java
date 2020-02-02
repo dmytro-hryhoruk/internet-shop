@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
+
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.exceptions.DataProcessingException;
@@ -37,7 +38,6 @@ public class UserServiceImpl implements UserService {
     public Optional<User> getByToken(String token) throws DataProcessingException {
         return userDao.getByToken(token);
     }
-
 
     private String getToken() {
         return UUID.randomUUID().toString();

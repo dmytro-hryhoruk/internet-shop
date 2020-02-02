@@ -8,7 +8,6 @@ public class Bucket {
     private Long id;
     private List<Item> items = new ArrayList<>();
 
-
     public Long getId() {
         return id;
     }
