@@ -25,7 +25,7 @@ public class AuthenticationFilter implements Filter {
     private static UserService userService;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 

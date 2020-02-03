@@ -1,7 +1,7 @@
 package mate.academy.internetshop.model;
 
 public class IdGenerator {
-    private static Long userId = 2L;
+    private static Long userId = 1L;
     private static Long bucketId = 1L;
     private static Long orderId = 1L;
     private static Long itemId = 1L;

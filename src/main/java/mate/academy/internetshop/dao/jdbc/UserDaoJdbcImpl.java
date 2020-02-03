@@ -28,29 +28,27 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 + "JOIN users_roles ON users.login= ? "
                 + "AND users.user_id = users_roles.user_id "
                 + "JOIN roles ON users_roles.role_id = roles.role_id;";
-        try (PreparedStatement stmt =
-                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, login);
-            ResultSet rs = stmt.executeQuery();
-            User user = new User();
-            while (rs.next()) {
-                user = getUserFromResultSet(rs);
-            }
-            return Optional.of(user);
-        } catch (SQLException e) {
-            throw new DataProcessingException("couldn't get user with login = " + login, e);
-        }
+        return findByParameter(query, login);
     }
 
     @Override
-    public Optional<User> getByToken(String token) throws DataProcessingException {
+    public Optional<User> getByToken(String token)
+            throws DataProcessingException {
         String query = "SELECT * FROM users "
                 + "JOIN users_roles ON users.token= ? "
                 + "AND users.user_id = users_roles.user_id "
                 + "JOIN roles ON users_roles.role_id = roles.role_id;";
+        return findByParameter(query, token);
+    }
+
+    @Override
+    public Optional<User> get(Long userId) throws DataProcessingException {
+        String query = "SELECT * FROM users "
+                + "JOIN users_roles ON users.user_id = ? AND users.user_id = users_roles.user_id "
+                + "JOIN roles ON users_roles.role_id = roles.role_id;";
         try (PreparedStatement stmt =
                      connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, token);
+            stmt.setLong(1, userId);
             ResultSet rs = stmt.executeQuery();
             User user = new User();
             while (rs.next()) {
@@ -58,7 +56,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             }
             return Optional.of(user);
         } catch (SQLException e) {
-            throw new DataProcessingException("couldn't get user with token = " + token, e);
+            throw new DataProcessingException("couldn't get user with id = " + userId, e);
         }
     }
 
@@ -83,52 +81,6 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             return user;
         } catch (SQLException e) {
             throw new DataProcessingException("Couldn't add user " + user, e);
-        }
-    }
-
-    private void setRoles(User user) throws DataProcessingException {
-        String query = "INSERT INTO users_roles (user_id, role_id) VALUES"
-                + " (?, (SELECT role_id FROM roles WHERE role_name = ?));";
-        try (PreparedStatement stmt =
-                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            for (Role role : user.getRoles()) {
-                stmt.setLong(1, user.getId());
-                stmt.setString(2, String.valueOf(role.getRoleName()));
-                stmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DataProcessingException("Couldn't set roles for user = " + user, e);
-        }
-    }
-
-    private boolean deleteRoles(User user) throws DataProcessingException {
-        String query = "DELETE FROM users_roles WHERE user_id = ?;";
-        try (PreparedStatement stmt =
-                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setLong(1, user.getId());
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            throw new DataProcessingException("couldn't delete roles for user " + user, e);
-        }
-    }
-
-    @Override
-    public Optional<User> get(Long userId) throws DataProcessingException {
-        String query = "SELECT * FROM users "
-                + "JOIN users_roles ON users.user_id = ? AND users.user_id = users_roles.user_id "
-                + "JOIN roles ON users_roles.role_id = roles.role_id;";
-        try (PreparedStatement stmt =
-                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setLong(1, userId);
-            ResultSet rs = stmt.executeQuery();
-            User user = new User();
-            while (rs.next()) {
-                user = getUserFromResultSet(rs);
-            }
-            return Optional.of(user);
-        } catch (SQLException e) {
-            throw new DataProcessingException("couldn't get user with id = " + userId, e);
         }
     }
 
@@ -210,5 +162,48 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         byte[] salt = rs.getBytes("salt");
         user.setSalt(salt);
         return user;
+    }
+
+    private Optional<User> findByParameter(String query, String parameter)
+            throws DataProcessingException {
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, parameter);
+            ResultSet rs = stmt.executeQuery();
+            User user = new User();
+            while (rs.next()) {
+                user = getUserFromResultSet(rs);
+            }
+            return Optional.of(user);
+        } catch (SQLException e) {
+            throw new DataProcessingException("couldn't get user with parameter = " + parameter, e);
+        }
+    }
+
+    private boolean deleteRoles(User user) throws DataProcessingException {
+        String query = "DELETE FROM users_roles WHERE user_id = ?;";
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setLong(1, user.getId());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            throw new DataProcessingException("couldn't delete roles for user " + user, e);
+        }
+    }
+
+    private void setRoles(User user) throws DataProcessingException {
+        String query = "INSERT INTO users_roles (user_id, role_id) VALUES"
+                + " (?, (SELECT role_id FROM roles WHERE role_name = ?));";
+        try (PreparedStatement stmt =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            for (Role role : user.getRoles()) {
+                stmt.setLong(1, user.getId());
+                stmt.setString(2, String.valueOf(role.getRoleName()));
+                stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Couldn't set roles for user = " + user, e);
+        }
     }
 }

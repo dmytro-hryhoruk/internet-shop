@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btnSubmit">Submit</button>
-                <p>Already have an account? <a href="/internet_shop_war_exploded/login">Sign in</a></p>
+                <p>Already have an account? <a href="${pageContext.request.contextPath}/login">Sign in</a></p>
             </div>
         </div>
     </div>

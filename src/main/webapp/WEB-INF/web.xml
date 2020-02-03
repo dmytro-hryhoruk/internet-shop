@@ -151,15 +151,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>InjectDataController</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.InjectDataController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>InjectDataController</servlet-name>
-        <url-pattern>/inject</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>DeleteItemController</servlet-name>
         <servlet-class>mate.academy.internetshop.controller.DeleteItemController</servlet-class>
     </servlet>

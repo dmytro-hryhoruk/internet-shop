@@ -15,19 +15,22 @@
                 <menuitem id="demo2">
                     <a>Users</a>
                     <menu>
-                        <menuitem><a href="/internet_shop_war_exploded/registration">Create new User</a></menuitem>
-                        <menuitem><a href="/internet_shop_war_exploded/servlet/getAllUsers">All Users</a></menuitem>
+                        <menuitem><a href="${pageContext.request.contextPath}/registration">Create new User</a>
+                        </menuitem>
+                        <menuitem><a href="${pageContext.request.contextPath}/servlet/getAllUsers">All Users</a>
+                        </menuitem>
                     </menu>
                 </menuitem>
                 <menuitem id="demo2">
                     <a>Items</a>
                     <menu>
-                        <menuitem><a href="/internet_shop_war_exploded/servlet/addItem">Add Item</a></menuitem>
-                        <menuitem><a href="/internet_shop_war_exploded/servlet/getAllItems">All Items</a></menuitem>
+                        <menuitem><a href="${pageContext.request.contextPath}/servlet/addItem">Add Item</a></menuitem>
+                        <menuitem><a href="${pageContext.request.contextPath}/servlet/getAllItems">All Items</a>
+                        </menuitem>
                     </menu>
                 </menuitem>
                 <menuitem>
-                    <a href="/internet_shop_war_exploded/logout">Logout</a>
+                    <a href="${pageContext.request.contextPath}/logout">Logout</a>
                 </menuitem>
 
             </menu>

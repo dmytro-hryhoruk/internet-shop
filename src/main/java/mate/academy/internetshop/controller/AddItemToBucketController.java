@@ -29,7 +29,6 @@ public class AddItemToBucketController extends HttpServlet {
             Item item = itemService.get(Long.valueOf(itemId));
             Bucket bucket = bucketService.getByUserId(userId);
             bucketService.addItem(bucket, item);
-            Bucket bucket1 = bucketService.getByUserId(userId);
         } catch (DataProcessingException e) {
             req.setAttribute("errMsg", e);
             req.getRequestDispatcher("/WEB-INF/views/dbErrorPage.jsp").forward(req, resp);
