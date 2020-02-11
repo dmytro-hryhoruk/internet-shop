@@ -16,6 +16,7 @@ import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.UserService;
+import mate.academy.internetshop.util.HashUtil;
 
 public class RegistrationController extends HttpServlet {
     @Inject
