@@ -2,16 +2,17 @@ package mate.academy.internetshop.dao;
 
 import java.util.List;
 import java.util.Optional;
+
 import mate.academy.internetshop.exceptions.DataProcessingException;
 
-public interface GenericDao<T, ID> {
+public interface GenericDao<T, I> {
     T create(T entity) throws DataProcessingException;
 
-    Optional<T> get(ID entityId) throws DataProcessingException;
+    Optional<T> get(I entityId) throws DataProcessingException;
 
     T update(T entity) throws DataProcessingException;
 
-    boolean deleteById(ID entityId) throws DataProcessingException;
+    boolean deleteById(I entityId) throws DataProcessingException;
 
     boolean delete(T entity) throws DataProcessingException;
 

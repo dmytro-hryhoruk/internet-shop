@@ -1,5 +1,12 @@
 package mate.academy.internetshop.web.filters;
 
+import static mate.academy.internetshop.model.Role.RoleName.ADMIN;
+import static mate.academy.internetshop.model.Role.RoleName.USER;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -9,18 +16,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
 import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
-
-
-import static mate.academy.internetshop.model.Role.RoleName.ADMIN;
-import static mate.academy.internetshop.model.Role.RoleName.USER;
 
 public class AuthorizationFilter implements Filter {
     @Inject
@@ -28,13 +29,11 @@ public class AuthorizationFilter implements Filter {
     private Map<String, Role.RoleName> protectedUrls = new HashMap<>();
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         protectedUrls.put("/servlet/getAllUsers", ADMIN);
         protectedUrls.put("/servlet/deleteItem", ADMIN);
         protectedUrls.put("/servlet/addItem", ADMIN);
         protectedUrls.put("/servlet/deleteUser", ADMIN);
-
-
         protectedUrls.put("/servlet/addItemToBucket", USER);
         protectedUrls.put("/servlet/deleteItemFromBucket", USER);
         protectedUrls.put("/servlet/showBucket", USER);

@@ -1,15 +1,10 @@
 package mate.academy.internetshop.model;
 
 public class Role {
-    private final Long id;
+    private Long id;
     private RoleName roleName;
 
-    public Role() {
-        this.id = IdGenerator.getNewRoleId();
-    }
-
-    public Role(RoleName roleName) {
-        this();
+    private Role(RoleName roleName) {
         this.roleName = roleName;
     }
 
@@ -31,7 +26,5 @@ public class Role {
 
     public enum RoleName {
         ADMIN, USER
-
-
     }
 }

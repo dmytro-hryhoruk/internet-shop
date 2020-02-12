@@ -83,8 +83,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                '}';
+        return "User{" + "name='" + name + '}';
     }
 }

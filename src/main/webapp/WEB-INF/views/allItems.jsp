@@ -31,13 +31,13 @@
                 <c:out value="${item.price}"/>
             </td>
             <td>
-                <a href="/internet_shop_war_exploded/servlet/addItemToBucket?item_id=${item.id}"
+                <a href="${pageContext.request.contextPath}/servlet/addItemToBucket?item_id=${item.id}"
                    style="color: limegreen;
                    text-align: center ;"
                 >ADD</a>
             </td>
             <td>
-                <a href="/internet_shop_war_exploded/servlet/deleteItem?item_id=${item.id}"
+                <a href="${pageContext.request.contextPath}/servlet/deleteItem?item_id=${item.id}"
                    style="color: darkred"
                 >DELETE</a>
             </td>
@@ -45,11 +45,11 @@
     </c:forEach>
 </table>
 <br><br>
-<button onclick="location.href='/internet_shop_war_exploded/servlet/showBucket'" type="button">
+<button onclick="location.href='${pageContext.request.contextPath}/servlet/showBucket'" type="button">
     Go To Bucket
 </button>
 <br><br>
-<button onclick="location.href='/internet_shop_war_exploded/servlet/Menu'" type="button">
+<button onclick="location.href='${pageContext.request.contextPath}/servlet/Menu'" type="button">
     back to menu
 </button>
 </body>

@@ -16,7 +16,7 @@
                 <h2 class="text-white ">Sign In </h2>
             </div>
 
-            <form class="mt-5" action="/internet_shop_war_exploded/login" method="post">
+            <form class="mt-5" action="${pageContext.request.contextPath}/login" method="post">
                 <div style="color: red">${errorMsg}</div>
                 <div class="form-group">
                     <input type="text" name="login"
@@ -39,7 +39,7 @@
                 <div class="mt-5">
                     <p class="text-white text-center">
                         Don't have an account?
-                        <a href="/internet_shop_war_exploded/registration">Sign up</a>
+                        <a href="${pageContext.request.contextPath}/registration">Sign up</a>
                     </p>
                 </div>
             </form>

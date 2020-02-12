@@ -2,6 +2,7 @@ package mate.academy.internetshop.service.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Inject;
@@ -15,7 +16,6 @@ import mate.academy.internetshop.service.OrderService;
 public class OrderServiceImpl implements OrderService {
     @Inject
     private static OrderDao orderDao;
-
 
     @Override
     public Order get(Long id) throws DataProcessingException {

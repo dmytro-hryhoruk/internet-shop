@@ -1,10 +1,12 @@
 package mate.academy.internetshop.controller;
 
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
 import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.library.Inject;
 import mate.academy.internetshop.model.Bucket;
@@ -27,7 +29,6 @@ public class AddItemToBucketController extends HttpServlet {
             Item item = itemService.get(Long.valueOf(itemId));
             Bucket bucket = bucketService.getByUserId(userId);
             bucketService.addItem(bucket, item);
-            Bucket bucket1 = bucketService.getByUserId(userId);
         } catch (DataProcessingException e) {
             req.setAttribute("errMsg", e);
             req.getRequestDispatcher("/WEB-INF/views/dbErrorPage.jsp").forward(req, resp);

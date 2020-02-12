@@ -34,14 +34,14 @@
                 <c:out value="${user.surname}"/>
             </td>
             <td>
-                <a href="/internet_shop_war_exploded/servlet/deleteUser?user_id=${user.id}"
+                <a href="${pageContext.request.contextPath}/servlet/deleteUser?user_id=${user.id}"
                    style="color: darkred" method="post"
                 >DELETE</a>
             </td>
         </tr>
     </c:forEach>
 </table>
-<form action="/internet_shop_war_exploded/registration">
+<form action="${pageContext.request.contextPath}/registration">
     <button type="submit" style="
     color: limegreen;
     margin-left: 5px;
@@ -53,7 +53,7 @@
     font-weight:700;">Add User
     </button>
 </form>
-<button onclick="location.href='/internet_shop_war_exploded/servlet/Menu'" type="button">
+<button onclick="location.href='${pageContext.request.contextPath}/servlet/Menu'" type="button">
     back to menu
 </button>
 </body>
